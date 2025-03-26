@@ -8,10 +8,15 @@ using UnityEditor;
 
 public class PrototypeSnakeBody : MonoBehaviour
 {
+    Transform lastLink;
+
+    [SerializeField]
+    float distance;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        lastLink = this.transform;
     }
 
     // Update is called once per frame
@@ -23,6 +28,15 @@ public class PrototypeSnakeBody : MonoBehaviour
     void SpawnBody()
     {
         Debug.Log("Works");
+
+        GameObject newSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+
+        newSphere.transform.SetPositionAndRotation(lastLink.position, lastLink.rotation);
+        newSphere.transform.position -= lastLink.forward * distance;
+
+        lastLink = newSphere.transform;
+
+        newSphere.AddComponent<BodyLink>();
     }
 
 #if UNITY_EDITOR
@@ -45,4 +59,19 @@ public class PrototypeSnakeBody : MonoBehaviour
         }
     }
 #endif
+}
+
+public class BodyLink : MonoBehaviour
+{
+    BodyLink prevLink;
+
+    public void Initialize(BodyLink prevLink)
+    {
+        this.prevLink = prevLink;
+    }
+
+    private void Update()
+    {
+        
+    }
 }
