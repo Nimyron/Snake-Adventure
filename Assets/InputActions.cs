@@ -99,15 +99,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Button"",
-                    ""type"": ""Button"",
-                    ""id"": ""fcd1bce5-94c9-40f3-be04-08290e08a85c"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -165,17 +156,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""185653c3-bfbb-442b-a35e-8f97995f02a9"",
-                    ""path"": ""<Keyboard>/f"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Button"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -185,7 +165,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         // Snake
         m_Snake = asset.FindActionMap("Snake", throwIfNotFound: true);
         m_Snake_Move = m_Snake.FindAction("Move", throwIfNotFound: true);
-        m_Snake_Button = m_Snake.FindAction("Button", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -267,7 +246,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Snake;
     private List<ISnakeActions> m_SnakeActionsCallbackInterfaces = new List<ISnakeActions>();
     private readonly InputAction m_Snake_Move;
-    private readonly InputAction m_Snake_Button;
     /// <summary>
     /// Provides access to input actions defined in input action map "Snake".
     /// </summary>
@@ -283,10 +261,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Snake/Move".
         /// </summary>
         public InputAction @Move => m_Wrapper.m_Snake_Move;
-        /// <summary>
-        /// Provides access to the underlying input action "Snake/Button".
-        /// </summary>
-        public InputAction @Button => m_Wrapper.m_Snake_Button;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -316,9 +290,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @Button.started += instance.OnButton;
-            @Button.performed += instance.OnButton;
-            @Button.canceled += instance.OnButton;
         }
 
         /// <summary>
@@ -333,9 +304,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @Button.started -= instance.OnButton;
-            @Button.performed -= instance.OnButton;
-            @Button.canceled -= instance.OnButton;
         }
 
         /// <summary>
@@ -383,12 +351,5 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMove(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Button" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnButton(InputAction.CallbackContext context);
     }
 }
