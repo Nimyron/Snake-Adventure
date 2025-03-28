@@ -30,10 +30,13 @@ public class InputController : MonoBehaviour
         inputActions.Disable();
     }
 
-    private void Update()
+    // Remove after prototyping body links
+    public float bodySpeed;
+    private void FixedUpdate()
     {
         transform.rotation *= Quaternion.AngleAxis(rotInput * rotSpeed, transform.up);
         //transform.Translate(translation + transform.forward * moveSpeed);
+        bodySpeed = moveInput * moveSpeed;
         transform.position += moveInput * transform.forward * moveSpeed;
     }
 

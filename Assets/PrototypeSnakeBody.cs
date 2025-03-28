@@ -31,12 +31,12 @@ public class PrototypeSnakeBody : MonoBehaviour
 
         GameObject newSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
 
-        newSphere.transform.SetPositionAndRotation(lastLink.position, lastLink.rotation);
-        newSphere.transform.position -= lastLink.forward * distance;
+        newSphere.transform.SetPositionAndRotation(lastLink.position - lastLink.forward, lastLink.rotation);
+
+        PrototypeBodyLink proto = newSphere.AddComponent<PrototypeBodyLink>();
+        proto.Initialize(lastLink, this.transform);
 
         lastLink = newSphere.transform;
-
-        newSphere.AddComponent<BodyLink>();
     }
 
 #if UNITY_EDITOR
@@ -59,19 +59,4 @@ public class PrototypeSnakeBody : MonoBehaviour
         }
     }
 #endif
-}
-
-public class BodyLink : MonoBehaviour
-{
-    BodyLink prevLink;
-
-    public void Initialize(BodyLink prevLink)
-    {
-        this.prevLink = prevLink;
-    }
-
-    private void Update()
-    {
-        
-    }
 }
