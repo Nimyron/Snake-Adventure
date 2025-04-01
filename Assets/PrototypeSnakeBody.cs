@@ -1,5 +1,7 @@
 using UnityEngine;
 using Unity.VisualScripting;
+using System.Collections;
+
 
 
 #if UNITY_EDITOR
@@ -13,30 +15,44 @@ public class PrototypeSnakeBody : MonoBehaviour
     [SerializeField]
     float distance;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+#if UNITY_EDITOR
+    [SerializeField]
+    bool autoSpawn = false;
+    public bool AutoSpawn { set => autoSpawn = value; get => autoSpawn; }
+
+    [SerializeField]
+    float autoSpawnDelay;
+#endif
+
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         lastLink = this.transform;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        StartCoroutine(AutoSpawnBody());
     }
 
     void SpawnBody()
     {
-        Debug.Log("Works");
-
         GameObject newSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
 
-        newSphere.transform.SetPositionAndRotation(lastLink.position - lastLink.forward, lastLink.rotation);
+        newSphere.transform.SetPositionAndRotation(lastLink.position, lastLink.rotation);
 
         PrototypeBodyLink proto = newSphere.AddComponent<PrototypeBodyLink>();
-        proto.Initialize(lastLink, this.transform);
+        proto.Initialize(lastLink, lastLink.position);
 
         lastLink = newSphere.transform;
+    }
+
+    IEnumerator AutoSpawnBody()
+    {
+        while (true)
+        {
+            if (autoSpawn)
+            {
+                SpawnBody();
+            }
+            yield return new WaitForSeconds(autoSpawnDelay);
+        }
     }
 
 #if UNITY_EDITOR
@@ -55,6 +71,11 @@ public class PrototypeSnakeBody : MonoBehaviour
             if (GUILayout.Button("Add body section"))
             {
                 script.SpawnBody();
+            }
+
+            if(GUILayout.Button("Auto spawn body on/off"))
+            {
+                script.AutoSpawn = script.AutoSpawn ? false : true;
             }
         }
     }

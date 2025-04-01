@@ -4,25 +4,32 @@ using UnityEngine;
 public class PrototypeBodyLink : MonoBehaviour
 {
     Transform prevLink;
-    Transform speedRef;
-    int distance = 20;
+    Vector3 prevPos;
+    float distance = 20f;
 
     Queue<Vector3> prevLinkPositions;
+    Queue<Quaternion> prevLinkRotations;
 
-    public void Initialize(Transform prevLink, Transform speedRef)
+    public void Initialize(Transform prevLink, Vector3 prevPos)
     {
         this.prevLink = prevLink;
-        this.speedRef = speedRef;
+        this.prevPos = prevPos;
         prevLinkPositions = new Queue<Vector3>();
+        prevLinkRotations = new Queue<Quaternion>();
     }
 
     private void FixedUpdate()
     {
-        prevLinkPositions.Enqueue(prevLink.position - prevLink.forward * distance);
+        if (prevPos == prevLink.position) return;
+
+        prevLinkPositions.Enqueue(prevLink.position);
+        prevLinkRotations.Enqueue(prevLink.rotation);
+        prevPos = prevLink.position;
 
         if (prevLinkPositions.Count < distance) return;
 
-        transform.rotation = Quaternion.LookRotation(prevLink.position - transform.position);
+        transform.rotation = prevLinkRotations.Dequeue();
+        Debug.DrawRay(transform.position, transform.forward);
         transform.position = prevLinkPositions.Dequeue();
     }
 }

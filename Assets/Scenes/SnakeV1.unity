@@ -659,6 +659,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distance: 2
+  autoSpawnDelay: 0.05
 --- !u!1 &1937572393 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4258411891960909470, guid: a14264b4a8d1e604fbda5332c8f53a39, type: 3}
