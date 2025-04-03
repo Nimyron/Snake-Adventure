@@ -1,24 +1,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PrototypeBodyLink : MonoBehaviour
+public class SnakeBodyHandler : MonoBehaviour
 {
     Transform prevLink;
     Vector3 prevPos;
-    float distance = 20f;
+    float distance;
 
     Queue<Vector3> prevLinkPositions;
     Queue<Quaternion> prevLinkRotations;
 
-    public void Initialize(Transform prevLink, Vector3 prevPos)
+    public void Initialize(Transform _prevLink, Vector3 _prevPos, float _distance)
     {
-        this.prevLink = prevLink;
-        this.prevPos = prevPos;
+        prevLink = _prevLink;
+        prevPos = _prevPos;
+        distance = _distance;
         prevLinkPositions = new Queue<Vector3>();
         prevLinkRotations = new Queue<Quaternion>();
     }
 
     private void FixedUpdate()
+    {
+        UpdateTransform();
+    }
+
+    void UpdateTransform()
     {
         if (prevPos == prevLink.position) return;
 
@@ -28,8 +34,7 @@ public class PrototypeBodyLink : MonoBehaviour
 
         if (prevLinkPositions.Count < distance) return;
 
-        transform.rotation = prevLinkRotations.Dequeue();
-        Debug.DrawRay(transform.position, transform.forward);
         transform.position = prevLinkPositions.Dequeue();
+        transform.rotation = prevLinkRotations.Dequeue();
     }
 }
